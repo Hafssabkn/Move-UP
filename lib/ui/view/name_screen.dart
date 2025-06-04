@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
-
+import '../../service/user_data_service.dart';
 import 'gender_screen.dart';
 
-class NameScreen extends StatelessWidget {
+class NameScreen extends StatefulWidget {
   const NameScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
+  State<NameScreen> createState() => _NameScreenState();
+}
 
+class _NameScreenState extends State<NameScreen> {
+  final TextEditingController nameController = TextEditingController();
+  String? errorMessage;
+
+  void _goToNextScreen() {
+    final name = nameController.text.trim();
+    if (name.isNotEmpty) {
+      UserDataService.setUserName(name); // Enregistrement dans le service
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const GenderScreen()),
+      );
+    } else {
+      setState(() {
+        errorMessage = 'Please enter your name.';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -33,7 +60,7 @@ class NameScreen extends StatelessWidget {
                       fontSize: 24,
                       letterSpacing: 1.5,
                       fontWeight: FontWeight.w600,
-                      fontFamily: "InriaSerif-bold"
+                      fontFamily: "InriaSerif-bold",
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -43,12 +70,12 @@ class NameScreen extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 16,
                       height: 1.4,
-                        fontFamily: "InriaSerif-Regular"
+                      fontFamily: "InriaSerif-Regular",
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
-                  Image.asset('assets/images/fitnessicon.png',width: 150),
+                  Image.asset('assets/images/fitnessicon.png', width: 150),
                   const SizedBox(height: 30),
                   TextField(
                     controller: nameController,
@@ -68,19 +95,18 @@ class NameScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if (errorMessage != null) ...[
+                    const SizedBox(height: 10),
+                    Text(
+                      errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
                   const SizedBox(height: 40),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        final name = nameController.text;
-                        if (name.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => GenderScreen()),
-                          );
-                        }
-                      },
+                      onPressed: _goToNextScreen,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(vertical: 14),

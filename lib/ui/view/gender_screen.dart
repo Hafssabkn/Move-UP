@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moveup/ui/view/goals_screen.dart';
-
+import '../../service/user_data_service.dart';
+import 'goals_screen.dart';
 
 class GenderScreen extends StatefulWidget {
   const GenderScreen({super.key});
@@ -11,6 +11,16 @@ class GenderScreen extends StatefulWidget {
 
 class _GenderScreenState extends State<GenderScreen> {
   String? selectedGender;
+
+  void _goToNextScreen() {
+    if (selectedGender != null) {
+      UserDataService.setGender(selectedGender!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const GoalsScreen()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +61,7 @@ class _GenderScreenState extends State<GenderScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
-                  Image.asset('assets/images/fitnessicon.png',width: 150),
+                  Image.asset('assets/images/fitnessicon.png', width: 150),
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -73,14 +83,7 @@ class _GenderScreenState extends State<GenderScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: selectedGender != null
-                          ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GoalsScreen()),
-                        );
-                      }
-                          : null,
+                      onPressed: selectedGender != null ? _goToNextScreen : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(vertical: 14),
