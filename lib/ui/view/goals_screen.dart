@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../service/user_data_service.dart';
 import 'level_screen.dart';
 
 class GoalsScreen extends StatefulWidget {
@@ -10,6 +11,16 @@ class GoalsScreen extends StatefulWidget {
 
 class _GoalsScreenState extends State<GoalsScreen> {
   String? selectedGoal;
+
+  void _goToNextScreen() {
+    if (selectedGoal != null) {
+      UserDataService.setGoal(selectedGoal!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LevelScreen()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +61,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
-                  Image.asset('assets/images/fitnessicon.png',width: 150),
+                  Image.asset('assets/images/fitnessicon.png', width: 150),
                   const SizedBox(height: 30),
 
                   Column(
@@ -76,17 +87,10 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: selectedGoal != null
-                          ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LevelScreen()),
-                        );
-                        print('Selected goal: $selectedGoal');
-                      }
-                          : null,
+                      onPressed: selectedGoal != null ? _goToNextScreen : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: selectedGoal != null ? Colors.red : Colors.grey[700],
+                        backgroundColor:
+                        selectedGoal != null ? Colors.red : Colors.grey[700],
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -127,9 +131,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
               ? Colors.grey[700]
               : Colors.grey[800]?.withOpacity(0.8),
           border: Border.all(
-            color: isSelected
-                ? Colors.grey[500]!
-                : Colors.grey[600]!,
+            color: isSelected ? Colors.grey[500]! : Colors.grey[600]!,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(8),

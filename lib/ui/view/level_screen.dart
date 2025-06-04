@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moveup/ui/view/more_information.dart';
+import '../../service/user_data_service.dart';
+import 'more_information.dart';
 
 class LevelScreen extends StatefulWidget {
   const LevelScreen({super.key});
@@ -18,6 +19,16 @@ class _LevelScreenState extends State<LevelScreen> {
     {'level': 4, 'height': 90.0, 'label': 'Advanced'},
     {'level': 5, 'height': 110.0, 'label': 'Expert'},
   ];
+
+  void _goToNextScreen() {
+    if (selectedLevel != null) {
+      UserDataService.setFitnessLevel(selectedLevel!);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MoreInformationScreen()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +70,7 @@ class _LevelScreenState extends State<LevelScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
-                  Image.asset('assets/images/fitnessicon.png',width: 150),
+                  Image.asset('assets/images/fitnessicon.png', width: 150),
                   const SizedBox(height: 40),
 
                   Container(
@@ -131,17 +142,10 @@ class _LevelScreenState extends State<LevelScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: selectedLevel != null
-                          ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MoreInformationScreen())
-                        );
-                        print('Selected fitness level: ${_getLevelTitle(selectedLevel!)}');
-                      }
-                          : null,
+                      onPressed: selectedLevel != null ? _goToNextScreen : null,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: selectedLevel != null ? Colors.red : Colors.grey[700],
+                        backgroundColor:
+                        selectedLevel != null ? Colors.red : Colors.grey[700],
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
