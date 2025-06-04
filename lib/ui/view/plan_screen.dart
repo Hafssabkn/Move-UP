@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moveup/ui/view/workout_details_screen.dart';
 import '../../model/exercise.dart';
 import '../../service/api_service.dart';
-
 
 class PlanScreen extends StatefulWidget {
   const PlanScreen({super.key});
@@ -30,7 +30,6 @@ class _PlanScreenState extends State<PlanScreen> {
       });
 
       List<Exercise> featured = await ApiService.getFeaturedWorkout();
-
       List<Exercise> allExercises = await ApiService.getAllExercises(limit: 10);
 
       setState(() {
@@ -192,7 +191,7 @@ class _PlanScreenState extends State<PlanScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'BEGONNEN',
+              'STARTED',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -207,7 +206,7 @@ class _PlanScreenState extends State<PlanScreen> {
             const SizedBox(height: 40),
 
             const Text(
-              'ALLE PLÄNE',
+              'ALL PLANS',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -228,7 +227,7 @@ class _PlanScreenState extends State<PlanScreen> {
 
   Widget _buildFeaturedCard() {
     if (featuredExercises.isEmpty) {
-      return _buildPlaceholderCard('GANZKÖRPER-SHRED', 'STUFE 1');
+      return _buildPlaceholderCard('FULL BODY SHRED', 'LEVEL 1');
     }
 
     Exercise exercise = featuredExercises.first;
@@ -286,20 +285,28 @@ class _PlanScreenState extends State<PlanScreen> {
               const SizedBox(height: 20),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
-                  'TAG 1 • START',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => WorkoutDetailScreen())
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:  Colors.red ,
+                    foregroundColor: Colors.white,
                   ),
-                  textAlign: TextAlign.center,
+                  child: const Text(
+                    'Get Started',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -370,7 +377,7 @@ class _PlanScreenState extends State<PlanScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
-                  'TAG 1 • START',
+                  'DAY 1 • START',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -391,12 +398,13 @@ class _PlanScreenState extends State<PlanScreen> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       height: 120,
+      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-          image: AssetImage(exercise.backgroundImage),
+          image: AssetImage('assets/images/general_workout.jpg'),
           fit: BoxFit.cover,
-          onError: (exception, stackTrace) => const AssetImage('assets/images/general_workout.jpg'),
+          onError: (exception, stackTrace) => AssetImage(Colors.black as String),
         ),
       ),
       child: Container(
@@ -423,7 +431,7 @@ class _PlanScreenState extends State<PlanScreen> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: const Text(
-                  'KOSTENLOS',
+                  'FOR FREE',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 10,

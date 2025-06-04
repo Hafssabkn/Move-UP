@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../model/exercise.dart';
 
-
 class ApiService {
   static const String baseUrl = 'https://api.api-ninjas.com/v1/exercises';
-  static const String apiKey = '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';
+  static const String apiKey = 'eQ/dAMN/RyJ34sJwsGPaXA==kkir217ne2eY3u75';
 
   static Future<List<Exercise>> getExercisesByMuscle(String muscle) async {
     try {
@@ -116,7 +115,7 @@ class ApiService {
       for (String muscle in muscleGroups) {
         List<Exercise> exercises = await getExercisesByMuscle(muscle);
         if (exercises.isNotEmpty) {
-          allExercises.add(exercises.first); 
+          allExercises.add(exercises.first);
         }
       }
 

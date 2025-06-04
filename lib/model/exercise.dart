@@ -17,12 +17,12 @@ class Exercise {
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     return Exercise(
-      name: json['name'] ?? '',
-      type: json['type'] ?? '',
-      muscle: json['muscle'] ?? '',
-      equipment: json['equipment'] ?? '',
-      difficulty: json['difficulty'] ?? '',
-      instructions: json['instructions'] ?? '',
+      name: json['name'],
+      type: json['type'],
+      muscle: json['muscle'],
+      equipment: json['equipment'],
+      difficulty: json['difficulty'],
+      instructions: json['instructions'],
     );
   }
 
@@ -60,27 +60,6 @@ class Exercise {
         return '3 Level';
       default:
         return '2 Level';
-    }
-  }
-
-  String get backgroundImage {
-    switch (muscle.toLowerCase()) {
-      case 'abdominals':
-      case 'abs':
-        return 'assets/images/abs_workout.jpg';
-      case 'biceps':
-      case 'triceps':
-        return 'assets/images/arms_workout.jpg';
-      case 'chest':
-        return 'assets/images/chest_workout.jpg';
-      case 'legs':
-      case 'quadriceps':
-      case 'hamstrings':
-        return 'assets/images/legs_workout.jpg';
-      case 'shoulders':
-        return 'assets/images/shoulder_workout.jpg';
-      default:
-        return 'assets/images/general_workout.jpg';
     }
   }
 }
